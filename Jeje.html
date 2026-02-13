@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Untuk Seseorang yang Paling Spesial ❤️</title>
+    
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@300;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #8E0E0E;
+            --secondary: #FAD0C4;
+            --pink-soft: #FFCAD4;
+            --bg: #FFF8F0;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--primary);
+            font-family: 'Quicksand', sans-serif;
+            margin: 0; padding: 0;
+            overflow-x: hidden;
+            transition: 0.5s;
+        }
+
+        section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .hidden { display: none !important; }
+
+        /* Step 1: Verification Box */
+        #verify-box {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            border: 2px solid var(--secondary);
+        }
+
+        input {
+            padding: 12px; border: 2px solid var(--pink-soft);
+            border-radius: 15px; outline: none; text-align: center;
+            font-size: 1rem; color: var(--primary); width: 80%;
+            margin-bottom: 20px;
+        }
+
+        /* Common Buttons */
+        .btn-main {
+            background: #FF4D6D; color: white;
+            padding: 15px 40px; border: none; border-radius: 50px;
+            font-size: 1.2rem; font-weight: bold; cursor: pointer;
+            transition: 0.3s; box-shadow: 0 5px 15px rgba(255, 77, 109, 0.3);
+        }
+
+        .btn-main:hover { transform: scale(1.05); background: #ff3355; }
+
+        /* Step 2: Storytelling */
+        .story-card {
+            background: white; padding: 30px; border-radius: 20px;
+            max-width: 600px; line-height: 1.8;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+        }
+        .story-text { font-family: 'Dancing Script', cursive; font-size: 1.8rem; }
+
+        /* Step 3: The Proposal */
+        .btn-no {
+            background: #6c757d; color: white;
+            padding: 10px 25px; border: none; border-radius: 50px;
+            font-size: 1rem; cursor: pointer;
+            position: absolute; transition: 0.1s; z-index: 10;
+        }
+
+        /* Final Certificate */
+        .certificate-container {
+            background: white; padding: 30px;
+            border: 10px double var(--secondary);
+            border-radius: 15px; max-width: 500px;
+            color: #333; position: relative;
+        }
+        .cert-inner { border: 2px solid var(--secondary); padding: 20px; }
+        .divider { height: 2px; background: linear-gradient(to right, transparent, var(--secondary), transparent); margin: 20px 0; }
+
+        /* Floating Hearts Animation */
+        .floating-heart {
+            position: fixed; color: #FF4D6D; pointer-events: none;
+            z-index: 999; animation: fadeUp 1s forwards;
+        }
+        @keyframes fadeUp {
+            to { transform: translateY(-100px); opacity: 0; }
+        }
+    </style>
+</head>
+<body onclick="spawnHeart(event)">
+
+    <section id="step1">
+        <div id="verify-box" class="animate__animated animate__fadeIn">
+            <h2 style="font-family: 'Dancing Script', cursive; font-size: 2.5rem;">Halo kamu...</h2>
+            <p>Pesan ini dikunci secara rahasia.<br>Siapa nama panggilan kesayangan dari aku untukmu?</p>
+            <input type="text" id="passInput" placeholder="Ketik di sini...">
+            <br>
+            <button onclick="checkPass()" class="btn-main">Buka Isi Hati</button>
+        </div>
+    </section>
+
+    <section id="step2" class="hidden">
+        <div class="story-card animate__animated animate__zoomIn">
+            <p class="story-text">
+                "Kadang aku mikir, gimana ya jadinya kalau hari itu kita nggak ketemu? <br><br>
+                Mungkin duniaku nggak akan seberwarna sekarang. Terima kasih ya, sudah hadir dan bertahan sejauh ini sama aku yang banyak kurangnya."
+            </p>
+            <button onclick="nextStep(3)" class="btn-main" style="font-size: 1rem;">Lanjut...</button>
+        </div>
+    </section>
+
+    <section id="step3" class="hidden">
+        <div style="font-size: 5rem;" class="animate__animated animate__heartBeat animate__infinite">❤️</div>
+        <h1 style="font-family: 'Dancing Script', cursive; font-size: 3rem;">I have a question...</h1>
+        <p style="font-size: 1.3rem; max-width: 500px;">
+            Aku nggak mau cuma jadi sekadar pengagum. Aku mau jadi orang yang nemenin kamu di hari baik maupun buruk.<br><br>
+            <b>Will you be mine?</b>
+        </p>
+        
+        <div style="margin-top: 50px; position: relative; height: 150px; width: 300px;">
+            <button id="yesBtn" onclick="celebrate()" class="btn-main">YA! ❤️</button>
+            <button id="noBtn" onmouseover="moveNo()" onclick="moveNo()" class="btn-no">Enggak</button>
+        </div>
+    </section>
+
+    <section id="final-screen" class="hidden" style="background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);">
+        <div class="certificate-container animate__animated animate__jackInTheBox">
+            <div class="cert-inner">
+                <h1 style="font-family: 'Dancing Script', cursive; color: #8E0E0E; margin-top:0;">Official Love Bond</h1>
+                <p>Mulai detik ini, status kita resmi menjadi:</p>
+                <h2 style="font-size: 2.8rem; margin: 15px 0; color: #FF4D6D;">KITA ❤️</h2>
+                <div class="divider"></div>
+                <p><i>"Janji ya, jangan bosen sama aku. Kita buat banyak cerita seru bareng-bareng mulai hari ini."</i></p>
+                <p id="current-date" style="font-weight: bold; margin-bottom: 0;"></p>
+            </div>
+        </div>
+        
+        <p class="animate__animated animate__fadeInUp animate__delay-1s" style="margin-top: 30px; font-weight: bold;">
+            Screenshot ini & kirim ke WhatsApp aku sekarang! 😍
+        </p>
+
+        <audio id="loveSong" src="LANY - you! (Lyrics).mp3" preload="auto"></audio>
+    </section>
+
+    <script>
+       // 1. Password Check & Play Music
+function checkPass() {
+    const pass = document.getElementById('passInput').value.toLowerCase();
+    
+    // GANTI "dimsum pake nasi" dengan nama panggilan kalian
+    if(pass.includes("dimsum pake nasi") || pass.includes("beib")) { 
+        
+        // --- BAGIAN MUSIK DIMULAI DISINI ---
+        const audio = document.getElementById('loveSong');
+        audio.play().catch(e => {
+            console.log("Browser memblokir autoplay, musik akan berputar setelah interaksi berikutnya.");
+        });
+        // -----------------------------------
+
+        nextStep(2); // Pindah ke bagian cerita
+    } else {
+        alert("Tetot! Jawabannya bukan itu. Petunjuk: Nama panggilan spesial dari aku...");
+    }
+}
+
+        // 2. Navigation
+        function nextStep(step) {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            const next = document.getElementById('step' + step);
+            next.classList.remove('hidden');
+        }
+
+        // 3. Tombol "Enggak" yang Lari
+        function moveNo() {
+            const btn = document.getElementById('noBtn');
+            const x = Math.random() * (window.innerWidth - btn.offsetWidth);
+            const y = Math.random() * (window.innerHeight - btn.offsetHeight);
+            btn.style.left = x + 'px';
+            btn.style.top = y + 'px';
+        }
+
+        // 4. Selebrasi Akhir
+        function celebrate() {
+            document.querySelectorAll('section').forEach(s => s.classList.add('hidden'));
+            document.getElementById('final-screen').classList.remove('hidden');
+            
+            // Set Tanggal Otomatis
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('current-date').innerText = new Date().toLocaleDateString('id-ID', options);
+
+            // Putar Musik
+            const audio = document.getElementById('loveSong');
+            audio.play().catch(e => console.log("Musik butuh klik manual"));
+
+            // Efek Konfeti
+            var end = Date.now() + (7 * 1000);
+            var colors = ['#FF4D6D', '#ffffff', '#FAD0C4'];
+
+            (function frame() {
+              confetti({ particleCount: 4, angle: 60, spread: 55, origin: { x: 0 }, colors: colors });
+              confetti({ particleCount: 4, angle: 120, spread: 55, origin: { x: 1 }, colors: colors });
+              if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
+        }
+
+        // 5. Spawn Hati saat klik layar
+        function spawnHeart(e) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤️';
+            heart.className = 'floating-heart';
+            heart.style.left = e.clientX + 'px';
+            heart.style.top = e.clientY + 'px';
+            document.body.appendChild(heart);
+            setTimeout(() => { heart.remove(); }, 1000);
+        }
+    </script>
+</body>
+</html>
